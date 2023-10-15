@@ -59,4 +59,15 @@ impl Storage {
 
         Storage { conn: connection }
     }
+
+    pub fn get_connection(&self) -> &Connection {
+        &self.conn
+    }
+
+    // pub fn add_new_password(&self, name: String, value: String) {
+    //     self.conn.execute(
+    //         "insert into Passwords (name, value) values (? , ?);", 
+    //         (name, value))
+    //         .expect("AHTUNG AHTUNG something went wrong");
+    // }
 }
