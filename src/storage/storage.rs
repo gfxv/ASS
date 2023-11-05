@@ -1,15 +1,17 @@
 
 use rusqlite::{Connection, Result, params, OpenFlags};
+use crate::storage::crud::{password::PasswordCRUD};
 
 
 pub struct Storage {
+    path: String,
     conn: Connection
 }
 
 impl Storage {
- 
+
     pub fn new(path: String) -> Self {
-        let connection = Connection::open_with_flags(path, OpenFlags::default())
+        let connection = Connection::open_with_flags(&path, OpenFlags::default())
             .expect("Error while connecting to storage");
 
         connection.execute( "create table if not exists Users (
@@ -57,7 +59,18 @@ impl Storage {
             foreign key (group_id) references Groups(id)
         );", ()).expect("Error in creating PasswordGroup table");
 
-        Storage { conn: connection }
+        
+        let storage = Storage { 
+            path: path,
+            conn: connection
+        };
+
+        storage
+    }
+
+    pub fn get_password_crud(&self) -> PasswordCRUD {
+        PasswordCRUD::new(&self.path)
+        // PasswordCRUD::new(self.get_connection())
     }
 
     pub fn get_connection(&self) -> &Connection {
