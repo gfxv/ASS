@@ -1,5 +1,8 @@
 
-use crate::core::commands::command::Command;
+use crate::core::{
+    commands::command::Command, 
+    entities::cmd_data::CommandData,
+};
 
 // usage:
 // get <name>
@@ -28,7 +31,7 @@ impl Command for GetPasswordCommand {
     }
 
     fn execute(&self) {
-        todo!()
+        println!("GET PASSWORD COMMAND");
     }
 }
 

@@ -1,5 +1,8 @@
 
-use crate::core::commands::command::Command;
+use crate::core::{
+    commands::command::Command, 
+    entities::prompt::Prompt
+};
 
 // usage:
 // new
@@ -29,7 +32,12 @@ impl Command for NewPasswordCommand {
     }
 
     fn execute(&self) {
-        todo!()
+        let name = Prompt::new(&String::from("Resource name: "))
+            .expect("[CORE.ERROR] Can't read user's `Resource name` input");
+        let password = Prompt::new(&String::from("Password: "))
+            .expect("[CORE.ERROR] Can't read user's `Password` input");
+
+        println!("{}:{}", name, password);
     }
 
 }
