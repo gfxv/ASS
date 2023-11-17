@@ -1,16 +1,19 @@
 #![allow(unused)]
 use std::io;
-
+use crate::core::commands::invoker::Invoker;
+use crate::cli::utils::parse_user_input;
 
 pub struct Cli {
     user_input: String,
+    invoker: Invoker
 }
 
 
 impl Cli {
-    pub fn new() -> Self {
+    pub fn new(invoker: Invoker) -> Self {
         Self { 
             user_input: String::new(),
+            invoker
         }
     }
 
@@ -21,18 +24,21 @@ impl Cli {
                 println!("Bye!");
                 break;
             }
-            println!("Your input: {}", self.get_user_input());
+
+            let cmd_data = parse_user_input(&self.get_user_input());
+            
+            self.invoker.execute_command(cmd_data);
         }
     }
 
-    pub fn read_line(&mut self) {
+    fn read_line(&mut self) {
         self.user_input.clear();
         io::stdin()
             .read_line(&mut self.user_input)
             .expect("failed to read user input (in cli)");
     }
         
-    pub fn get_user_input(&mut self) -> String {
+    fn get_user_input(&mut self) -> String {
         self.user_input.to_owned()
     }
 
