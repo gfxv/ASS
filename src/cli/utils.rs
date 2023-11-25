@@ -6,7 +6,7 @@ pub fn parse_user_input(input: &String) -> CommandData {
     let cmd = parts[0].trim().to_string();
     let mut arg = String::from("");
     if parts.len() == 2 {
-        arg = parts[1].to_string();
+        arg = parts[1].trim().to_string();
     }
     let cmd_data = CommandData::new(cmd, arg);
     

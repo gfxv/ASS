@@ -1,7 +1,11 @@
 
 use crate::core::{
     commands::command::Command, 
-    entities::{prompt::Prompt, cmd_data::CommandData}
+    entities::{
+        prompt::Prompt, 
+        cmd_data::CommandData,
+        return_data:: ReturnData
+    }
 };
 use crate::storage::storage::Storage;
 
@@ -32,7 +36,7 @@ impl Command for NewPasswordCommand {
         self.desc.to_string()
     }
 
-    fn execute(&self, data: CommandData) {
+    fn execute(&self, data: CommandData) -> ReturnData {
         let name = Prompt::new(&String::from("Resource name: "))
             .expect("[CORE.ERROR] Can't read user's `Resource name` input");
         let password = Prompt::new(&String::from("Password: "))
@@ -42,9 +46,7 @@ impl Command for NewPasswordCommand {
             data.get_path().to_owned()
         ).get_password_crud();
         
-        password_crud.insert_new_password(&name, &password);
-
-        println!("{}:{}", name, password);
+        password_crud.insert_new_password(&name, &password)
     }
 
 }

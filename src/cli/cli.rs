@@ -27,7 +27,20 @@ impl Cli {
 
             let cmd_data = parse_user_input(&self.get_user_input());
             
-            self.invoker.execute_command(cmd_data);
+            let result = self.invoker.execute_command(cmd_data);
+
+            if result.get_status().to_owned() != 1 {
+                println!("{:}", result.get_message());
+                continue;
+            }
+
+            // for operations that doesn't retreive data from DB
+            if result.get_data().len() == 0 {
+                println!("{:}", result.get_message());
+                continue;
+            }
+
+            println!("{:}", result.get_data());
         }
     }
 

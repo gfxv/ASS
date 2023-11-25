@@ -72,7 +72,6 @@ impl Storage {
 
     pub fn get_password_crud(&self) -> PasswordCRUD {
         PasswordCRUD::new(&self.path)
-        // PasswordCRUD::new(self.get_connection())
     }
 
     pub fn get_connection(&self) -> &Connection {

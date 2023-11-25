@@ -2,6 +2,7 @@
 use crate::{core::{
     commands::command::Command, 
     entities::cmd_data::CommandData,
+    entities::return_data::ReturnData
 }, storage::storage::Storage};
 
 // usage:
@@ -30,16 +31,18 @@ impl Command for GetPasswordCommand {
         self.desc.to_string()
     }
 
-    fn execute(&self, data: CommandData) {
+    fn execute(&self, data: CommandData) -> ReturnData {
         let name = data.get_arg();
-        if name.len() > 0 {
-            let password_crud = Storage::new(
-                data.get_path().to_owned()
-            ).get_password_crud();
-            password_crud.get_password_by_name(name);
-            return;
+        if !(name.len() > 0) {
+            println!("bad input");
+            return ReturnData::new(String::from(""), 2, String::from(""));
         }
-        println!("bad input");
+
+        let password_crud = Storage::new(
+            data.get_path().to_owned()
+        ).get_password_crud();
+
+        password_crud.get_password_by_name(name)
     }
 }
 

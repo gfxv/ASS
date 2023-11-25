@@ -4,6 +4,7 @@ use crate::core::commands::command::Command;
 use crate::core::commands::*;
 use crate::core::entities::cmd_data::CommandData;
 use crate::storage::storage::Storage;
+use crate::core::entities::return_data::ReturnData;
 
 
 pub struct Invoker {
@@ -44,12 +45,12 @@ impl Invoker {
 
     
     // remove println!, return object(struct) with status and message instead
-    pub fn execute_command(&self, mut data: CommandData) {
+    pub fn execute_command(&self, mut data: CommandData) -> ReturnData {
         if let Some(command) = self.commands.get(data.get_cmd()) {
             data.set_path(&self.storage);
-            command.execute(data);
+            command.execute(data)
         } else {
-            println!("Command '{}' not found.", data.get_cmd()); // return HERE
+            ReturnData::new(String::from("Command '") + data.get_cmd() + "' not found.", 4, String::from(""))
         }
     }
     

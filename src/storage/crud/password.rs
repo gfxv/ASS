@@ -1,4 +1,5 @@
 use rusqlite::{Connection, Result, params, OpenFlags};
+use crate::core::entities::return_data::ReturnData;
 
 
 pub struct PasswordCRUD {
@@ -17,14 +18,7 @@ impl PasswordCRUD {
         }
     }
 
-    pub fn get_password_by_name(&self, name: &String) {
-
-        // let password = self.conn.execute(
-        //     "select value from Passwords where name = (:name)", 
-        //     rusqlite::named_params! {":name" : name}
-        //     ).expect("[STORAGE.ERROR] Can't select password by name");
-
-        // println!("Password: {:?}", password);
+    pub fn get_password_by_name(&self, name: &String) -> ReturnData {
 
         let mut receiver = self.conn
             .prepare("select value from Passwords where name = :name")
@@ -35,16 +29,16 @@ impl PasswordCRUD {
             .expect("[STORAGE.ERROR] Can't query password");
 
         let mut value: String = String::new();
-        while let Some(row) = rows.next().expect("while row failed") {
-            value = row.get(0).expect("get failed");
+        while let Some(row) = rows.next().expect("[STORAGE.ERROR] Can't iterate through rows") {
+            value = row.get(0).expect("[STORAGE.ERROR] Can't get password from row");
         }
 
-        println!("Password: {:}", value);
-
+        ReturnData::new(String::from(""), 1, value)
+        // println!("Password: {:}", value);
     }
 
     // Note: probably should return status + message (?)
-    pub fn insert_new_password(&self, name: &String, value: &String) {
+    pub fn insert_new_password(&self, name: &String, value: &String) -> ReturnData {
         let result = self.conn.execute(
             "insert into Passwords (name, value) values (:name, :value)", 
             rusqlite::named_params! {
@@ -52,8 +46,7 @@ impl PasswordCRUD {
                 ":value": value
             }).expect("[STORAGE.ERROR] Can't add new password to database");
             
-        println!("{:}", result); // returns 1 on success
-        println!("Something works???");
+        ReturnData::new(String::from("Password added successfully"), 1, String::from(""))
     }
 
 }
