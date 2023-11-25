@@ -12,7 +12,9 @@ impl Storage {
 
     pub fn new(path: String) -> Self {
         let connection = Connection::open_with_flags(&path, OpenFlags::default())
-            .expect("Error while connecting to storage");
+        .map_err(|e| {
+            println!("{:}", e);
+        }).expect("(check the path to database file)");
 
         connection.execute( "create table if not exists Users (
             id int primary key,
@@ -77,10 +79,4 @@ impl Storage {
         &self.conn
     }
 
-    // pub fn add_new_password(&self, name: String, value: String) {
-    //     self.conn.execute(
-    //         "insert into Passwords (name, value) values (? , ?);", 
-    //         (name, value))
-    //         .expect("AHTUNG AHTUNG something went wrong");
-    // }
 }
