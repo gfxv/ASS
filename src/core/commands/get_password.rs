@@ -1,8 +1,8 @@
 
-use crate::core::{
+use crate::{core::{
     commands::command::Command, 
     entities::cmd_data::CommandData,
-};
+}, storage::storage::Storage};
 
 // usage:
 // get <name>
@@ -30,8 +30,16 @@ impl Command for GetPasswordCommand {
         self.desc.to_string()
     }
 
-    fn execute(&self) {
-        println!("GET PASSWORD COMMAND");
+    fn execute(&self, data: CommandData) {
+        let name = data.get_arg();
+        if name.len() > 0 {
+            let password_crud = Storage::new(
+                data.get_path().to_owned()
+            ).get_password_crud();
+            password_crud.get_password_by_name(name);
+            return;
+        }
+        println!("bad input");
     }
 }
 

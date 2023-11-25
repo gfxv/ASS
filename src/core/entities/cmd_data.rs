@@ -23,11 +23,15 @@ impl CommandData {
         self.db_path = path.to_string();
     }
 
+    pub fn get_path(&self) -> &String {
+        &self.db_path
+    }   
+
     pub fn get_cmd(&self) -> &String {
         &self.command_name
     }
 
-    pub fn get_arg(self) -> String {
-        self.arg
+    pub fn get_arg(&self) -> &String {
+        &self.arg
     }
 }

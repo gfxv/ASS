@@ -1,4 +1,5 @@
 
+use crate::core::entities::cmd_data::CommandData;
 
 pub trait Command {
 
@@ -6,5 +7,5 @@ pub trait Command {
 
     fn get_description(&self) -> String;
 
-    fn execute(&self);
+    fn execute(&self, cmd_data: CommandData);
 }

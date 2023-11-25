@@ -47,7 +47,7 @@ impl Invoker {
     pub fn execute_command(&self, mut data: CommandData) {
         if let Some(command) = self.commands.get(data.get_cmd()) {
             data.set_path(&self.storage);
-            command.execute();
+            command.execute(data);
         } else {
             println!("Command '{}' not found.", data.get_cmd()); // return HERE
         }
