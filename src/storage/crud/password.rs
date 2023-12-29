@@ -44,9 +44,24 @@ impl PasswordCRUD {
             rusqlite::named_params! {
                 ":name": name,
                 ":value": value
-            }).expect("[STORAGE.ERROR] Can't add new password to database");
+            }
+        ).expect("[STORAGE.ERROR] Can't add new password to database");
             
         ReturnData::new(String::from("Password added successfully"), 1, String::from(""))
+    }
+
+    // updates password value
+    pub fn update_by_name(&self, name: &String, new_value: &String) -> ReturnData {
+
+        let result = self.conn.execute(
+            "update Passwords set value = :value where name = :name",
+            rusqlite::named_params! {
+                ":name": name,
+                ":value": new_value
+            }
+        ).expect("[STORAGE.ERROR] Can't update password value");
+
+        ReturnData::new(String::from("Password value updated successfully"), 1, String::from(""))
     }
 
 }

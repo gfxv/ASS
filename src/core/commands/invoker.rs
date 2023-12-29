@@ -41,6 +41,14 @@ impl Invoker {
             new_password_command.get_name(), 
             Box::new(new_password_command)
         );
+
+        let update_password_command = update_password::UpdatePasswordCommand::new(
+            "update".to_string(), "LATER".to_string()
+        );
+        self.commands.insert(
+            update_password_command.get_name(),
+            Box::new(update_password_command)
+        );
     }
 
     

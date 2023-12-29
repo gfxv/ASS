@@ -1,6 +1,7 @@
 .idea
 target
 
+TODO.txt
 .gitignore
 src/database.db
 
