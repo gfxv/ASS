@@ -20,39 +20,35 @@ impl GroupCRUD {
         }
     }
 
-    pub fn get_all_groups(&self) -> ReturnData {
+    pub fn get_all_groups(&self) -> Result<ReturnData, String> {
         let mut message = String::from("Group created successfully!");
         let mut status = 1;
 
         let mut receiver = self.conn
             .prepare("select name from Groups;")
             .map_err(|err| {
-                message = err.to_string();
-                status = 2;
-            }).expect("[STORAGE.ERROR] Can't prepare statement to get all groups from database");
+                format!("[STORAGE.ERROR] Can't prepare statement to get all groups from database\n{}", err.to_string())
+            })?;
 
         let mut rows = receiver
             .query(())
             .map_err(|err| {
-                message = err.to_string();
-                status  = 2;
-            }).expect("[STORAGE.ERROR] Can't query all groups from database");
+                format!("[STORAGE.ERROR] Can't query all groups from database\n{}", err.to_string())
+            })?;
 
         // ЫАЫААЫАЫАА КАСТЫЛИ ААЫАЫАЫА
         let mut raw_data: Vec<String> = Vec::new();
         while let Some(row) = rows.next().map_err(|err| {
-            message = err.to_string();
-            status = 2;
-        }).expect("[STORAGE.ERROR] Can't get next group from rows") {
+            format!("[STORAGE.ERROR] Can't get next group from rows\n{}", err.to_string())
+        })? {
             raw_data.push(row.get(0).map_err(|err| {
-                message = err.to_string();
-                status = 2;
-            }).expect("[STORAGE.ERROR] Can't get group name from row"))
+                format!("[STORAGE.ERROR] Can't get group name from row\n{}", err.to_string())
+            })?);
         }
 
         let data = raw_data.join("\n");
 
-        ReturnData::new(message, status, data)
+        Ok(ReturnData::new(message, status, data))
 
     }
 
