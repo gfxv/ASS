@@ -10,5 +10,5 @@ pub trait Command {
 
     fn get_description(&self) -> String;
 
-    fn execute(&self, cmd_data: CommandData) -> ReturnData;
+    fn execute(&self, cmd_data: CommandData) -> Result<ReturnData, String>;
 }

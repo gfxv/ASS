@@ -31,11 +31,11 @@ impl Command for GetPasswordCommand {
         self.desc.to_string()
     }
 
-    fn execute(&self, data: CommandData) -> ReturnData {
+    fn execute(&self, data: CommandData) -> Result<ReturnData, String> {
         let name = data.get_arg();
         if !(name.len() > 0) {
             println!("bad input");
-            return ReturnData::new(String::from(""), 2, String::from(""));
+            return Ok(ReturnData::new(String::from(""), 2, String::from("")));
         }
 
         let password_crud = Storage::new(

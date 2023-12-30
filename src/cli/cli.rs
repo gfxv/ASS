@@ -30,18 +30,21 @@ impl Cli {
             
             let result = self.invoker.execute_command(cmd_data);
 
-            if result.get_status().to_owned() != 1 {
-                println!("{:}", result.get_message());
+            let data = match result {
+                Ok(data) => data,
+                Err(err) => {
+                    println!("{}", err);
+                    continue;
+                }
+            };
+
+            // for operations that doesn't retrieve data from DB
+            if data.get_data().len() == 0 {
+                println!("{:}", data.get_message());
                 continue;
             }
 
-            // for operations that doesn't retreive data from DB
-            if result.get_data().len() == 0 {
-                println!("{:}", result.get_message());
-                continue;
-            }
-
-            println!("{:}", result.get_data());
+            println!("{:}", data.get_data());
         }
     }
 

@@ -36,7 +36,7 @@ impl Command for NewPasswordCommand {
         self.desc.to_string()
     }
 
-    fn execute(&self, data: CommandData) -> ReturnData {
+    fn execute(&self, data: CommandData) -> Result<ReturnData, String> {
         let name = Prompt::new(&String::from("Resource name: "))
             .expect("[CORE.ERROR] Can't read user's `Resource name` input");
         let password = Prompt::new(&String::from("Password: "))

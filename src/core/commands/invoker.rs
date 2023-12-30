@@ -69,14 +69,13 @@ impl Invoker {
 
     }
 
-    
-    // remove println!, return object(struct) with status and message instead
-    pub fn execute_command(&self, mut data: CommandData) -> ReturnData {
+
+    pub fn execute_command(&self, mut data: CommandData) -> Result<ReturnData, String> {
         if let Some(command) = self.commands.get(data.get_cmd()) {
             data.set_path(&self.storage);
             command.execute(data)
         } else {
-            ReturnData::new(String::from("Command '") + data.get_cmd() + "' not found.", 4, String::from(""))
+            Ok(ReturnData::new(String::from("Command '") + data.get_cmd() + "' not found.", 4, String::from("")))
         }
     }
     

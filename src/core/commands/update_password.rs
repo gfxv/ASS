@@ -28,7 +28,7 @@ impl Command for UpdatePasswordCommand {
         self.desc.to_string()
     }
 
-    fn execute(&self, data: CommandData) -> ReturnData {
+    fn execute(&self, data: CommandData) -> Result<ReturnData, String> {
         let name = data.get_arg();
         let new_password = Prompt::new(&String::from("New Password: "))
             .expect("[CORE.ERROR] Can't read user's `Password` input");

@@ -72,7 +72,6 @@ impl GroupCRUD {
         })?;
 
         Ok(ReturnData::new(message, status, String::from("")))
-        // beginning
     }
 
 }

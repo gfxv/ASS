@@ -28,7 +28,7 @@ impl Command for CreateGroupCommand {
         self.desc.to_string()
     }
 
-    fn execute(&self, data: CommandData) -> ReturnData {
+    fn execute(&self, data: CommandData) -> Result<ReturnData, String> {
         let name = data.get_arg();
         let raw_access_level = Prompt::new(&String::from("Access Level: "))
             .expect("[CORE.ERROR] Can't read user's `Access Level` input");

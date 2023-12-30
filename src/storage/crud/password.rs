@@ -18,40 +18,39 @@ impl PasswordCRUD {
         }
     }
 
-    pub fn get_password_by_name(&self, name: &String) -> ReturnData {
+    pub fn get_password_by_name(&self, name: &String) -> Result<ReturnData, String> {
 
         let mut receiver = self.conn
             .prepare("select value from Passwords where name = :name")
-            .expect("[STORAGE.ERROR] Can't prepare password selection");
+            .map_err(|err| format!("[STORAGE.ERROR] Can't prepare password selection\n{}", err.to_string()))?;
 
         let mut rows = receiver
             .query(rusqlite::named_params!{ ":name": name})
-            .expect("[STORAGE.ERROR] Can't query password");
+            .map_err(|err| format!("[STORAGE.ERROR] Can't query password\n{}", err.to_string()))?;
 
         let mut value: String = String::new();
-        while let Some(row) = rows.next().expect("[STORAGE.ERROR] Can't iterate through rows") {
-            value = row.get(0).expect("[STORAGE.ERROR] Can't get password from row");
+        while let Some(row) = rows.next().map_err(|err| format!("[STORAGE.ERROR] Can't iterate through rows\n{}", err.to_string()))? {
+            value = row.get(0).map_err(|err| format!("[STORAGE.ERROR] Can't get password from row\n{}", err.to_string()))?;
         }
 
-        ReturnData::new(String::from(""), 1, value)
-        // println!("Password: {:}", value);
+        Ok(ReturnData::new(String::from(""), 1, value))
+
     }
 
-    // Note: probably should return status + message (?)
-    pub fn insert_new_password(&self, name: &String, value: &String) -> ReturnData {
+    pub fn insert_new_password(&self, name: &String, value: &String) -> Result<ReturnData, String> {
         let result = self.conn.execute(
             "insert into Passwords (name, value) values (:name, :value)", 
             rusqlite::named_params! {
                 ":name": name,
                 ":value": value
             }
-        ).expect("[STORAGE.ERROR] Can't add new password to database");
+        ).map_err(|err| format!("[STORAGE.ERROR] Can't add new password to database\n{}", err.to_string()))?;
             
-        ReturnData::new(String::from("Password added successfully"), 1, String::from(""))
+        Ok(ReturnData::new(String::from("Password added successfully"), 1, String::from("")))
     }
 
     // updates password value
-    pub fn update_by_name(&self, name: &String, new_value: &String) -> ReturnData {
+    pub fn update_by_name(&self, name: &String, new_value: &String) -> Result<ReturnData, String> {
 
         let result = self.conn.execute(
             "update Passwords set value = :value where name = :name",
@@ -59,9 +58,9 @@ impl PasswordCRUD {
                 ":name": name,
                 ":value": new_value
             }
-        ).expect("[STORAGE.ERROR] Can't update password value");
+        ).map_err(|err| format!("[STORAGE.ERROR] Can't update password value\n{}", err.to_string()))?;
 
-        ReturnData::new(String::from("Password value updated successfully"), 1, String::from(""))
+        Ok(ReturnData::new(String::from("Password value updated successfully"), 1, String::from("")))
     }
 
 }
