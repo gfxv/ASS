@@ -75,6 +75,14 @@ impl Invoker {
             Box::new(create_group_command)
         );
 
+        let get_all_groups_command = get_all_groups::GetAllGroupsCommand::new(
+          "all-groups".to_string(), "LATER".to_string()
+        );
+        self.commands.insert(
+            get_all_groups_command.get_name(),
+            Box::new(get_all_groups_command)
+        );
+
     }
 
 

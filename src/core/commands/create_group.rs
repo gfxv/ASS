@@ -29,18 +29,24 @@ impl Command for CreateGroupCommand {
     }
 
     fn execute(&self, data: CommandData) -> Result<ReturnData, String> {
-        let name = data.get_arg();
-        let raw_access_level = Prompt::new(&String::from("Access Level: "))
-            .expect("[CORE.ERROR] Can't read user's `Access Level` input");
+        let mut name = data.get_arg().to_string();
+
+        if name.is_empty() {
+            name = Prompt::new(&String::from("Group name: "))
+                .map_err(|err| format!("[CORE.ERROR] Can't read user's `Group name` input\n{}", err.to_string()))?;
+        }
+
+        let raw_access_level = Prompt::new(&String::from("Access level: "))
+            .map_err(|err| format!("[CORE.ERROR] Can't read user's `Access Level` input\n{}", err.to_string()))?;
 
         let access_level = raw_access_level.parse::<u16>()
-            .expect("[CORE.ERROR] Can't convert user's `Access Level` input");
+            .map_err(|err| format!("[CORE.ERROR] Can't convert user's `Access Level` input\n{}", err.to_string()))?;
 
         let group_crud = Storage::new(
             data.get_path().to_owned()
         ).get_group_crud();
 
-        group_crud.create_group(name, access_level)
+        group_crud.create_group(&name, access_level)
     }
 }
 

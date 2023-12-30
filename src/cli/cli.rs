@@ -27,9 +27,7 @@ impl Cli {
             }
 
             let cmd_data = parse_user_input(&self.get_user_input());
-            
             let result = self.invoker.execute_command(cmd_data);
-
             let data = match result {
                 Ok(data) => data,
                 Err(err) => {
@@ -44,6 +42,7 @@ impl Cli {
                 continue;
             }
 
+            println!("{:}", data.get_message());
             println!("{:}", data.get_data());
         }
     }

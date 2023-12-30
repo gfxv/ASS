@@ -1,7 +1,9 @@
 pub mod command;
 pub mod invoker;
-pub mod get_password;
-pub mod new_password;
-pub mod update_password;
-pub mod create_group;
-pub mod delete_password;
+mod get_password;
+mod new_password;
+mod update_password;
+mod create_group;
+mod delete_password;
+mod get_all_groups;
+mod get_groups_by_al;

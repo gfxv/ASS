@@ -7,3 +7,4 @@ edition = "2021"
 
 [dependencies]
 rusqlite = { version = "0.29.0", features = ["bundled"] }
+bcrypt = "0.15"
