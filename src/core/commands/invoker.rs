@@ -54,6 +54,14 @@ impl Invoker {
             Box::new(update_password_command)
         );
 
+        let delete_password_command = delete_password::DeletePasswordCommand::new(
+          "delete".to_string(), "LATER".to_string()
+        );
+        self.commands.insert(
+            delete_password_command.get_name(),
+            Box::new(delete_password_command)
+        );
+
         //-------------------//
         //  Group Commands   //
         //-------------------//

@@ -1,3 +1,4 @@
+use std::ffi::CString;
 use rusqlite::{Connection, Result, params, OpenFlags};
 use crate::core::entities::return_data::ReturnData;
 
@@ -61,6 +62,18 @@ impl PasswordCRUD {
         ).map_err(|err| format!("[STORAGE.ERROR] Can't update password value\n{}", err.to_string()))?;
 
         Ok(ReturnData::new(String::from("Password value updated successfully"), 1, String::from("")))
+    }
+
+    pub fn delete_password_by_name(&self, name: &String) -> Result<ReturnData, String> {
+
+        let result = self.conn.execute(
+            "delete from Passwords where name = :name",
+            rusqlite::named_params! {
+                ":name": name
+            }
+        ).map_err(|err| format!("[STORAGE.ERROR] Can't delete password\n{}", err.to_string()))?;
+
+        Ok(ReturnData::new(String::from("Password was deleted successfully!"), 1, String::from("")))
     }
 
 }
