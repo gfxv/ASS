@@ -1,6 +1,6 @@
+use std::ffi::CString;
 
-
-/// `message` - status or error message 
+/// `message` - status or error message
 ///
 /// `status` - status code (in progress...)
 ///
@@ -31,6 +31,18 @@ impl ReturnData {
 
     pub fn get_data(&self) -> &String {
         &self.data
-    } 
+    }
+
+    // pub fn set_message(&self, msg: &String) {
+    //     &self.message = msg;
+    // }
+
+    pub fn set_status(mut self, status: i16) {
+        self.status = status;
+    }
+
+    pub fn set_data(&self, data: &String) {
+
+    }
 
 }

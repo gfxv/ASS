@@ -11,7 +11,7 @@ impl PasswordCRUD {
 
     pub fn new(path: &String) -> Self {
         let connection = Connection::open_with_flags(path, OpenFlags::default())
-            .expect("[STORAGE.ERROR] Error while connecting to storage");
+            .expect("[STORAGE.ERROR] Error occurred while connecting to storage (@password)");
 
         Self {
             conn: connection

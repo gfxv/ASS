@@ -26,6 +26,10 @@ impl Invoker {
 
     pub fn init(&mut self) {
 
+        //----------------------//
+        //  Password Commands   //
+        //----------------------//
+
         let get_password_command = get_password::GetPasswordCommand::new(
             "get".to_string(), "LATER".to_string()
         );
@@ -49,6 +53,20 @@ impl Invoker {
             update_password_command.get_name(),
             Box::new(update_password_command)
         );
+
+        //-------------------//
+        //  Group Commands   //
+        //-------------------//
+
+        // ng = new group
+        let create_group_command = create_group::CreateGroupCommand::new(
+            "ng".to_string(), "LATER".to_string()
+        );
+        self.commands.insert(
+            create_group_command.get_name(),
+            Box::new(create_group_command)
+        );
+
     }
 
     

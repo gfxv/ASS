@@ -7,18 +7,18 @@ use crate::{core::{
 use crate::core::entities::prompt::Prompt;
 
 
-pub struct UpdatePasswordCommand {
+pub struct CreateGroupCommand {
     name: String,
     desc: String
 }
 
-impl UpdatePasswordCommand {
+impl CreateGroupCommand {
     pub fn new(name: String, desc: String) -> Self {
-        UpdatePasswordCommand {name, desc}
+        CreateGroupCommand {name, desc}
     }
 }
 
-impl Command for UpdatePasswordCommand {
+impl Command for CreateGroupCommand {
 
     fn get_name(&self) -> String {
         self.name.to_string()
@@ -30,14 +30,17 @@ impl Command for UpdatePasswordCommand {
 
     fn execute(&self, data: CommandData) -> ReturnData {
         let name = data.get_arg();
-        let new_password = Prompt::new(&String::from("New Password: "))
-            .expect("[CORE.ERROR] Can't read user's `Password` input");
+        let raw_access_level = Prompt::new(&String::from("Access Level: "))
+            .expect("[CORE.ERROR] Can't read user's `Access Level` input");
 
-        let password_crud = Storage::new(
+        let access_level = raw_access_level.parse::<u16>()
+            .expect("[CORE.ERROR] Can't convert user's `Access Level` input");
+
+        let group_crud = Storage::new(
             data.get_path().to_owned()
-        ).get_password_crud();
+        ).get_group_crud();
 
-        password_crud.update_by_name(&name, &new_password)
+        group_crud.create_group(name, access_level)
     }
 }
 

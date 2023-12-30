@@ -1,5 +1,6 @@
 #![allow(unused)]
 use std::io;
+use std::io::Write;
 use crate::core::commands::invoker::Invoker;
 use crate::cli::utils::parse_user_input;
 

@@ -1,6 +1,9 @@
 
 use rusqlite::{Connection, Result, params, OpenFlags};
-use crate::storage::crud::{password::PasswordCRUD};
+use crate::storage::crud::{
+    password::PasswordCRUD,
+    group::GroupCRUD
+};
 
 
 pub struct Storage {
@@ -72,6 +75,10 @@ impl Storage {
 
     pub fn get_password_crud(&self) -> PasswordCRUD {
         PasswordCRUD::new(&self.path)
+    }
+
+    pub fn get_group_crud(&self) -> GroupCRUD {
+        GroupCRUD::new(&self.path)
     }
 
     pub fn get_connection(&self) -> &Connection {
