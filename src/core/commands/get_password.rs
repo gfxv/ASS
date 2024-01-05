@@ -4,6 +4,7 @@ use crate::{core::{
     entities::cmd_data::CommandData,
     entities::return_data::ReturnData
 }, storage::storage::Storage};
+use crate::core::security::crypto::{decrypt_data, encrypt_data};
 
 // usage:
 // get <name>
@@ -32,8 +33,8 @@ impl Command for GetPasswordCommand {
     }
 
     fn execute(&self, data: CommandData) -> Result<ReturnData, String> {
-        let name = data.get_arg();
-        if !(name.len() > 0) {
+        let raw_name = data.get_arg();
+        if !(raw_name.len() > 0) {
             println!("bad input");
             return Ok(ReturnData::new(String::from(""), 2, String::from("")));
         }
@@ -42,7 +43,16 @@ impl Command for GetPasswordCommand {
             data.get_path().to_owned()
         ).get_password_crud();
 
-        password_crud.get_password_by_name(name)
+        let name = encrypt_data(raw_name)?;
+
+        let data = password_crud.get_password_by_name(&name)?;
+
+        if data.get_data().is_empty() {
+            return Ok(ReturnData::new(String::from("Password not found"), data.get_status().to_owned(), data.get_message().to_string()));
+        }
+
+        let decrypted = decrypt_data(data.get_data())?;
+        Ok(ReturnData::new(decrypted, data.get_status().to_owned(), data.get_message().to_string()))
     }
 }
 
