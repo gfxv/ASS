@@ -2,8 +2,10 @@
 use rusqlite::{Connection, Result, params, OpenFlags};
 use crate::storage::crud::{
     password::PasswordCRUD,
-    group::GroupCRUD
+    group::GroupCRUD,
+    role::RoleCRUD
 };
+use crate::storage::crud::auth::AuthCRUD;
 
 
 pub struct Storage {
@@ -20,20 +22,21 @@ impl Storage {
         }).expect("(check the path to database file)");
 
         connection.execute( "create table if not exists Users (
-            id int primary key,
+            id integer primary key autoincrement,
             username varchar(50) unique not null
         );", ()).expect("Error in creating Users table");
 
+
+        // salt varchar(255) unique not null,
         connection.execute("create table if not exists AuthPasswords (
-            id int primary key,
+            id integer primary key autoincrement,
             user_id int,
-            salt varchar(255) unique not null,
             password_hash varchar(255) not null,
             foreign key(user_id) references Users(id)
         );", ()).expect("Error in creating AuthPasswords table");
 
         connection.execute("create table if not exists Roles (
-            id int primary key,
+            id integer primary key autoincrement,
             name varchar(255) unique not null,
             access_level int not null
         );", ()).expect("Error in creating Roles table");
@@ -46,13 +49,13 @@ impl Storage {
         );", ()).expect("Error in creating UserRole table");
 
         connection.execute( "create table if not exists Passwords (
-            id int primary key,
+            id integer primary key autoincrement,
             name varchar(50) unique not null,
             value varchar(50) not null
         );", ()).expect("Error in creating Passwords table");
 
         connection.execute( "create table if not exists Groups (
-            id int primary key,
+            id integer primary key autoincrement,
             name varchar(50) unique not null,
             access_level int not null
         );", ()).expect("Error in creating Groups table");
@@ -80,6 +83,12 @@ impl Storage {
     pub fn get_group_crud(&self) -> GroupCRUD {
         GroupCRUD::new(&self.path)
     }
+
+    pub fn get_role_crud(&self) -> RoleCRUD {
+        RoleCRUD::new(&self.path)
+    }
+
+    pub fn get_auth_crud(&self) -> AuthCRUD {AuthCRUD::new(&self.path)}
 
     pub fn get_connection(&self) -> &Connection {
         &self.conn

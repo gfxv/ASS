@@ -83,6 +83,26 @@ impl Invoker {
             Box::new(get_all_groups_command)
         );
 
+        //------------------//
+        //  Role Commands   //
+        //------------------//
+
+        let create_role_command = create_role::CreateRoleCommand::new(
+            "nr".to_string(), "LATER".to_string()
+        );
+        self.commands.insert(
+            create_role_command.get_name(),
+            Box::new(create_role_command)
+        );
+
+        let get_all_roles_command = get_all_roles::GetAllGroupsCommand::new(
+            "all-roles".to_string(), "LATER".to_string()
+        );
+        self.commands.insert(
+            get_all_roles_command.get_name(),
+            Box::new(get_all_roles_command)
+        );
+
     }
 
 
