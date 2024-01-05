@@ -11,9 +11,9 @@ impl Prompt {
         print!("{:}", inquery_text);
         io::stdout().flush();
 
-        match io::stdin().read_line(&mut answer) {
-            Ok(n) => return Ok(answer.trim().to_string()),
-            Err(error) => return Err(error),
+        return match io::stdin().read_line(&mut answer) {
+            Ok(n) => Ok(answer.trim().to_string()),
+            Err(error) => Err(error),
         }
     }
 }
