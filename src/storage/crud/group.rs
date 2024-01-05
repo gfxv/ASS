@@ -22,8 +22,6 @@ impl GroupCRUD {
 
     pub fn get_all_groups(&self) -> Result<ReturnData, String> {
 
-        let mut status = 1;
-
         let mut receiver = self.conn
             .prepare("select name from Groups;")
             .map_err(|err| {
@@ -49,7 +47,7 @@ impl GroupCRUD {
         let data = raw_data.join("\n");
         let message = format!("Retrieved {} rows from database", raw_data.len());
 
-        Ok(ReturnData::new(message, status, data))
+        Ok(ReturnData::new(message, 1, data))
 
     }
 
