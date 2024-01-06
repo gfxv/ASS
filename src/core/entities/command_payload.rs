@@ -28,8 +28,8 @@ impl CommandPayload {
     }
 
     // When you `get_user` in <command>.execute user is always set, so no need for to check for `None` value
-    pub fn get_user(&self) -> &User {
-        &self.user.unwrap()
+    pub fn get_user(&self) -> User {
+        self.user.clone().unwrap()
     }
 
     pub fn get_path(&self) -> &String {

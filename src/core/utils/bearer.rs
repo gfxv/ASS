@@ -8,7 +8,7 @@ pub fn admin_only(user: &User) -> Result<(), String>{
         .map_err(|err| format!("[FILE.ERROR] Can't cast ADMIN_ACCESS_LEVEL = {} to u16", raw_value))?;
 
     if (user.get_access_level() < admin_access_level) {
-        Err(String::from("[ACCESS.ERROR] Permission denied.\n[ACCESS.ERROR] Your access level is not high enough!"))
+        return Err(String::from("[ACCESS.ERROR] Permission denied.\n[ACCESS.ERROR] Your access level is not high enough!"));
     }
     Ok(())
 }

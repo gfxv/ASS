@@ -34,7 +34,7 @@ impl Command for GetAllGroupsCommand {
 
     fn execute(&self, data: CommandPayload) -> Result<ReturnData, String> {
 
-        bearer::admin_only(data.get_user())?;
+        bearer::admin_only(&data.get_user())?;
 
         let group_crud = Storage::new(
             data.get_path().to_owned()
