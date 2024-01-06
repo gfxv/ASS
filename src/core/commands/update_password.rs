@@ -1,9 +1,12 @@
 
-use crate::{core::{
-    commands::command::Command,
-    entities::cmd_data::CommandData,
-    entities::return_data::ReturnData
-}, storage::storage::Storage};
+use crate::{
+    core::{
+        commands::command::Command,
+        entities::cmd_data::CommandData,
+        entities::return_data::ReturnData
+    },
+    storage::storage::Storage
+};
 use crate::core::entities::prompt::Prompt;
 use crate::core::security::crypto::encrypt_data;
 

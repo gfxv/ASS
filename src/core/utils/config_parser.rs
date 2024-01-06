@@ -3,6 +3,8 @@ use std::fmt::format;
 use std::fs::{File, read};
 use std::io::{BufRead, BufReader};
 
+pub const CONFIG_PATH: &str = "config.cfg";
+
 pub struct Parser {
     file_path: String,
     data: HashMap<String, String>

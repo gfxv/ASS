@@ -2,6 +2,9 @@
 
 use rusqlite::{Connection, Result, params, OpenFlags, named_params};
 use crate::core::entities::return_data::ReturnData;
+use crate::core::utils::config_parser::{
+    Parser, CONFIG_PATH
+};
 
 pub struct RoleCRUD {
     conn: Connection
@@ -87,13 +90,16 @@ impl RoleCRUD {
     }
 
     pub fn add_default_role(&self, user_id: u16) -> Result<(), String> {
-        const ROLE_ID: u16 = 3; // user role
+        let parser = Parser::new(CONFIG_PATH)?;
+        let raw_default_role_id = parser.get_value("DEFAULT_ROLE_ID")?;
+        let default_role_id = raw_default_role_id.parse::<u16>()
+            .map_err(|err| format!("[STORAGE.ERROR] Can't parse DEFAULT_ROLE_ID={} to u16", raw_default_role_id))?;
 
         let resul = self.conn.execute(
             "insert into UserRole (user_id, role_id) values (:user_id, :role_id);",
             named_params! {
                 ":user_id": user_id,
-                ":role_id": ROLE_ID
+                ":role_id": default_role_id
             }
         ).map_err(|err| {
             format!("[STORAGE.ERROR] Can't add role to user to database\n{}", err.to_string())

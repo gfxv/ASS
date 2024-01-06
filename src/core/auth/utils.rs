@@ -50,7 +50,7 @@ pub fn register(storage_path: &String) -> Result<String, String> {
     role_crud.add_default_role(user_id)?;
 
 
-    Ok(result.get_data().to_string())
+    Ok(format!("{}\nYou logged in as {}", result.get_message().to_string(), input_name))
 }
 
 pub fn login(storage_path: &String) -> Result<String, String> {

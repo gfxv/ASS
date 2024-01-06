@@ -1,9 +1,11 @@
 use std::env::consts::OS;
 use std::fs::read_to_string;
 use std::path::Path;
-use crate::core::utils::config_parser::Parser;
+use crate::core::utils::config_parser::{
+    Parser, CONFIG_PATH
+};
 
-const CONFIG_PATH: &str = "config.cfg";
+
 
 const WIN_KEY_PATH: &str = "WIN_KEY_PATH";
 const MAC_KEY_PATH: &str = "MAC_KEY_PATH";

@@ -39,7 +39,7 @@ impl AuthCRUD {
         Ok(ReturnData::new(String::from("User created successfully"), 1, String::from(user_id.to_string())))
     }
 
-    /// NO HASHING PERFORMED HERE, ONLY ADDING TO DB
+    /// NO HASHING PERFORMED HERE, ONLY INSERTING TO DB
     fn add_password(&self, user_id: u16, password: &String) -> Result<(), String> {
         let result = self.conn.execute(
             "insert into AuthPasswords (user_id, password_hash) values (:user_id, :password_hash)",
@@ -67,9 +67,6 @@ impl AuthCRUD {
         while let Some(row) = rows.next().map_err(|err| format!("[STORAGE.ERROR] Can't iterate through rows\n{}", err.to_string()))? {
             raw_id = row.get(0).map_err(|err| format!("[STORAGE.ERROR] Can't get user id from row\n{}", err.to_string()))?;
         }
-
-        // let user_id = raw_id.parse::<u16>()
-        //     .map_err(|err| format!("[STORAGE.ERROR] Can't convert user id {} to u16\n{}", raw_id, err.to_string()))?;
 
         Ok(raw_id as u16)
     }
