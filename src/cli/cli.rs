@@ -3,18 +3,21 @@ use std::io;
 use std::io::Write;
 use crate::core::commands::invoker::Invoker;
 use crate::cli::utils::parse_user_input;
+use crate::core::auth::entities::user::User;
 
 pub struct Cli {
     user_input: String,
-    invoker: Invoker
+    invoker: Invoker,
+    user: User
 }
 
 
 impl Cli {
-    pub fn new(invoker: Invoker) -> Self {
+    pub fn new(invoker: Invoker, auth_user: User) -> Self {
         Self { 
             user_input: String::new(),
-            invoker
+            invoker,
+            user: auth_user
         }
     }
 
@@ -26,8 +29,9 @@ impl Cli {
                 break;
             }
 
-            let cmd_data = parse_user_input(&self.get_user_input());
-            let result = self.invoker.execute_command(cmd_data);
+            let mut payload = parse_user_input(&self.get_user_input());
+            payload.set_auth_user(&self.user);
+            let result = self.invoker.execute_command(payload);
             let data = match result {
                 Ok(data) => data,
                 Err(err) => {

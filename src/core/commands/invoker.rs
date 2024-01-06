@@ -2,7 +2,7 @@
 use std::collections::HashMap;
 use crate::core::commands::command::Command;
 use crate::core::commands::*;
-use crate::core::entities::cmd_data::CommandData;
+use crate::core::entities::command_payload::CommandPayload;
 use crate::storage::storage::Storage;
 use crate::core::entities::return_data::ReturnData;
 
@@ -106,7 +106,7 @@ impl Invoker {
     }
 
 
-    pub fn execute_command(&self, mut data: CommandData) -> Result<ReturnData, String> {
+    pub fn execute_command(&self, mut data: CommandPayload) -> Result<ReturnData, String> {
         if let Some(command) = self.commands.get(data.get_cmd()) {
             data.set_path(&self.storage);
             command.execute(data)

@@ -9,7 +9,7 @@ use crate::core::entities::{
 
 use crate::storage::storage::Storage;
 
-pub fn auth(storage_path: &String) -> Result<String, String> {
+pub fn auth(storage_path: &String) -> Result<User, String> {
 
     let action = Prompt::new(&String::from("Register or login? (r/l) "))
         .map_err(|err| format!("[AUTH.ERROR] {}", err.to_string()))?
@@ -26,7 +26,7 @@ pub fn auth(storage_path: &String) -> Result<String, String> {
 
 }
 
-pub fn register(storage_path: &String) -> Result<String, String> {
+pub fn register(storage_path: &String) -> Result<User, String> {
 
     let input_name = Prompt::new(&String::from("Username: "))
         .map_err(|err| format!("[CORE.ERROR] Can't parse username input\n{}", err.to_string()))?;
@@ -49,11 +49,15 @@ pub fn register(storage_path: &String) -> Result<String, String> {
     let role_crud = storage.get_role_crud();
     role_crud.add_default_role(user_id)?;
 
+    let access_level = role_crud.get_max_access_level(user_id);
 
-    Ok(format!("{}\nYou logged in as {}", result.get_message().to_string(), input_name))
+    let user = auth_crud.get_user_by_name(&input_name)?;
+
+    // Ok(format!("{}\nYou logged in as {}", result.get_message().to_string(), input_name))
+    Ok(user)
 }
 
-pub fn login(storage_path: &String) -> Result<String, String> {
+pub fn login(storage_path: &String) -> Result<User, String> {
 
     let input_name = Prompt::new(&String::from("Username: "))
         .map_err(|err| format!("[CORE.ERROR] Can't parse username input\n{}", err.to_string()))?;
@@ -74,5 +78,6 @@ pub fn login(storage_path: &String) -> Result<String, String> {
     }
 
 
-    Ok(String::from(format!("You logged in as {}", input_name)))
+    // Ok(String::from(format!("You logged in as {}", input_name)))
+    Ok(user)
 }

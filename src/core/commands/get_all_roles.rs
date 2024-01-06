@@ -1,9 +1,10 @@
 
 use crate::{core::{
     commands::command::Command,
-    entities::cmd_data::CommandData,
+    entities::command_payload::CommandPayload,
     entities::return_data::ReturnData
 }, storage::storage::Storage};
+use crate::core::utils::bearer;
 
 // usage:
 // get <name>
@@ -31,7 +32,9 @@ impl Command for GetAllGroupsCommand {
         self.desc.to_string()
     }
 
-    fn execute(&self, data: CommandData) -> Result<ReturnData, String> {
+    fn execute(&self, data: CommandPayload) -> Result<ReturnData, String> {
+
+        bearer::admin_only(data.get_user())?;
 
         let role_crud = Storage::new(
             data.get_path().to_owned()

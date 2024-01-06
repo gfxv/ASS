@@ -15,23 +15,23 @@ use crate::core::utils::file_io::{get_cypher_key_path, get_file_data};
 
 fn main() {
 
-    // println!("{}", get_cypher_key_path().unwrap());
-    // println!("{}", get_file_data(&get_cypher_key_path().unwrap()).unwrap());
-
     let db_path = String::from("src/database.db");
 
-    match auth(&db_path) {
-        Ok(message) => println!("{}", message),
+    let user = match auth(&db_path) {
+        Ok(user) => {
+            println!("You logged in as {}", user.get_username());
+            user
+        },
         Err(err) => {
             println!("{}", err.to_string());
             process::exit(0);
         }
-    }
+    };
 
     let mut invoker = Invoker::new(db_path);
     invoker.init();
 
-    let mut cli = Cli::new(invoker);
+    let mut cli = Cli::new(invoker, user);
     cli.run();
 
 }

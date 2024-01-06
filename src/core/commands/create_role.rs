@@ -1,10 +1,11 @@
 
 use crate::{core::{
     commands::command::Command,
-    entities::cmd_data::CommandData,
+    entities::command_payload::CommandPayload,
     entities::return_data::ReturnData
 }, storage::storage::Storage};
 use crate::core::entities::prompt::Prompt;
+use crate::core::utils::bearer;
 
 
 pub struct CreateRoleCommand {
@@ -28,7 +29,10 @@ impl Command for CreateRoleCommand {
         self.desc.to_string()
     }
 
-    fn execute(&self, data: CommandData) -> Result<ReturnData, String> {
+    fn execute(&self, data: CommandPayload) -> Result<ReturnData, String> {
+
+        bearer::admin_only(data.get_user())?;
+
         let mut name = data.get_arg().to_string();
 
         if name.is_empty() {

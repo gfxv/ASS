@@ -1,6 +1,6 @@
 
 use crate::core::entities::{
-    cmd_data::CommandData,
+    command_payload::CommandPayload,
     return_data::ReturnData
 };
 
@@ -10,5 +10,5 @@ pub trait Command {
 
     fn get_description(&self) -> String;
 
-    fn execute(&self, cmd_data: CommandData) -> Result<ReturnData, String>;
+    fn execute(&self, cmd_data: CommandPayload) -> Result<ReturnData, String>;
 }

@@ -2,7 +2,7 @@
 use crate::{
     core::{
         commands::command::Command,
-        entities::cmd_data::CommandData,
+        entities::command_payload::CommandPayload,
         entities::return_data::ReturnData
     },
     storage::storage::Storage
@@ -32,7 +32,7 @@ impl Command for UpdatePasswordCommand {
         self.desc.to_string()
     }
 
-    fn execute(&self, data: CommandData) -> Result<ReturnData, String> {
+    fn execute(&self, data: CommandPayload) -> Result<ReturnData, String> {
         let raw_name = data.get_arg();
         let raw_new_password = Prompt::new(&String::from("New Password: "))
             .map_err(|err| format!("[CORE.ERROR] Can't read user's `Password` input\n{}", err.to_string()))?;

@@ -3,7 +3,7 @@ use crate::core::{
     commands::command::Command,
     entities::{
         prompt::Prompt,
-        cmd_data::CommandData,
+        command_payload::CommandPayload,
         return_data:: ReturnData
     }
 };
@@ -31,7 +31,7 @@ impl Command for DeletePasswordCommand {
         self.desc.to_string()
     }
 
-    fn execute(&self, data: CommandData) -> Result<ReturnData, String> {
+    fn execute(&self, data: CommandPayload) -> Result<ReturnData, String> {
 
         let name = data.get_arg();
 

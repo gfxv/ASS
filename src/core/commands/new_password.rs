@@ -2,8 +2,8 @@ use std::alloc::handle_alloc_error;
 use crate::core::{
     commands::command::Command, 
     entities::{
-        prompt::Prompt, 
-        cmd_data::CommandData,
+        prompt::Prompt,
+        command_payload::CommandPayload,
         return_data:: ReturnData
     },
     security::utils::{analyze_password, generate_password},
@@ -48,7 +48,7 @@ impl Command for NewPasswordCommand {
         self.desc.to_string()
     }
 
-    fn execute(&self, data: CommandData) -> Result<ReturnData, String> {
+    fn execute(&self, data: CommandPayload) -> Result<ReturnData, String> {
         let mut name = data.get_arg().to_string();
 
         if name.is_empty() {

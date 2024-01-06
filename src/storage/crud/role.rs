@@ -89,7 +89,7 @@ impl RoleCRUD {
         Ok(ReturnData::new(message, 1, data))
     }
 
-    pub fn add_default_role(&self, user_id: u16) -> Result<(), String> {
+    pub fn add_default_role(&self, user_id: u16) -> Result<u16, String> {
         let parser = Parser::new(CONFIG_PATH)?;
         let raw_default_role_id = parser.get_value("DEFAULT_ROLE_ID")?;
         let default_role_id = raw_default_role_id.parse::<u16>()
@@ -105,7 +105,12 @@ impl RoleCRUD {
             format!("[STORAGE.ERROR] Can't add role to user to database\n{}", err.to_string())
         })?;
 
-        Ok(())
+        Ok(default_role_id)
+    }
+
+    pub fn get_max_access_level(&self, user_id: u16) {
+
+
     }
 
 

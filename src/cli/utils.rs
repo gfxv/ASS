@@ -1,7 +1,7 @@
 
-use crate::core::entities::cmd_data::CommandData;
+use crate::core::entities::command_payload::CommandPayload;
 
-pub fn parse_user_input(input: &String) -> CommandData {
+pub fn parse_user_input(input: &String) -> CommandPayload {
 
     let parts = input.split_once(" ");
     let mut cmd = input.trim().to_string();
@@ -18,7 +18,7 @@ pub fn parse_user_input(input: &String) -> CommandData {
             .to_string();
     }
 
-    let cmd_data = CommandData::new(cmd, arg);
+    let cmd_data = CommandPayload::new(cmd, arg);
 
     cmd_data
 }

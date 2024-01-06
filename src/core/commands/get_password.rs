@@ -1,7 +1,7 @@
 
 use crate::{core::{
-    commands::command::Command, 
-    entities::cmd_data::CommandData,
+    commands::command::Command,
+    entities::command_payload::CommandPayload,
     entities::return_data::ReturnData
 }, storage::storage::Storage};
 use crate::core::security::crypto::{decrypt_data, encrypt_data};
@@ -32,7 +32,7 @@ impl Command for GetPasswordCommand {
         self.desc.to_string()
     }
 
-    fn execute(&self, data: CommandData) -> Result<ReturnData, String> {
+    fn execute(&self, data: CommandPayload) -> Result<ReturnData, String> {
         let raw_name = data.get_arg();
         if !(raw_name.len() > 0) {
             println!("bad input");

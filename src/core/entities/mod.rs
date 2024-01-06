@@ -1,5 +1,5 @@
 
-pub mod cmd_data;
+pub mod command_payload;
 pub mod prompt;
 // pub mod command_result;
 pub mod return_data;

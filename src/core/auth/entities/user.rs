@@ -1,6 +1,7 @@
 
 use bcrypt::verify;
 
+#[derive(Clone)]
 pub struct User {
     id: u16,
     username: String,
