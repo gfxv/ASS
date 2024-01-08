@@ -33,7 +33,7 @@ impl PasswordCRUD {
         while let Some(row) = rows.next().map_err(|err| format!("[STORAGE.ERROR] Can't iterate through rows\n{}", err.to_string()))? {
             value = row.get(0).map_err(|err| format!("[STORAGE.ERROR] Can't get password from row\n{}", err.to_string()))?;
         }
-
+        println!("value: `{}`", value);
         Ok(ReturnData::new(String::from(""), 1, value))
 
     }

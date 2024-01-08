@@ -49,11 +49,8 @@ pub fn register(storage_path: &String) -> Result<User, String> {
     let role_crud = storage.get_role_crud();
     role_crud.add_default_role(user_id)?;
 
-    let access_level = role_crud.get_max_access_level(user_id);
-
     let user = auth_crud.get_user_by_name(&input_name)?;
 
-    // Ok(format!("{}\nYou logged in as {}", result.get_message().to_string(), input_name))
     Ok(user)
 }
 

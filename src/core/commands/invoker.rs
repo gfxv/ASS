@@ -76,7 +76,7 @@ impl Invoker {
         );
 
         let get_all_groups_command = get_all_groups::GetAllGroupsCommand::new(
-          "all-groups".to_string(), "LATER".to_string()
+          "groups".to_string(), "LATER".to_string()
         );
         self.commands.insert(
             get_all_groups_command.get_name(),
@@ -95,8 +95,16 @@ impl Invoker {
             Box::new(create_role_command)
         );
 
+        let role_command = user_role::UserRoleCommand::new(
+            "role".to_string(), "LATER".to_string()
+        );
+        self.commands.insert(
+            role_command.get_name(),
+            Box::new(role_command)
+        );
+
         let get_all_roles_command = get_all_roles::GetAllGroupsCommand::new(
-            "all-roles".to_string(), "LATER".to_string()
+            "roles".to_string(), "LATER".to_string()
         );
         self.commands.insert(
             get_all_roles_command.get_name(),

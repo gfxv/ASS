@@ -52,7 +52,7 @@ impl AuthCRUD {
         Ok(())
     }
 
-    fn get_user_id_by_name(&self, username: &String) -> Result<u16, String> {
+    pub fn get_user_id_by_name(&self, username: &String) -> Result<u16, String> {
 
         let mut receiver = self.conn
             .prepare("select id from Users where username = :username;")
@@ -101,9 +101,6 @@ impl AuthCRUD {
             username = row.get(1).map_err(|err| format!("[STORAGE.ERROR] Can't get user name from row\n{}", err.to_string()))?;
         }
 
-        // let user_id = raw_id.parse::<u16>()
-        //     .map_err(|err| format!("[STORAGE.ERROR] Can't convert user id {} to u16\n{}", raw_id, err.to_string()))?;
-
         let password_hash = self.get_auth_password_by_user_id(user_id as u16)?;
 
         let max_access_level = match self.get_roles_als_by_user_id(user_id as u16)?.iter().max() {
@@ -114,7 +111,6 @@ impl AuthCRUD {
         let user = User::new(user_id as u16, username, password_hash, max_access_level);
 
         Ok(user)
-
     }
 
     fn get_auth_password_by_user_id(&self, user_id: u16) -> Result<String, String> {
@@ -144,7 +140,7 @@ impl AuthCRUD {
             join UserRole ur on role.id = ur.role_id
             where ur.user_id = :user_id;")
             .map_err(|err| {
-                format!("[STORAGE.ERROR] Can't prepare statement to get all roles for specific user from database\n{}", err.to_string())
+                format!("[STORAGE.ERROR] Can't prepare statement to get all role's access levels for specific user from database\n{}", err.to_string())
             })?;
 
         let mut rows = receiver
