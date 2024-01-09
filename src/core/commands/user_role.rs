@@ -1,4 +1,3 @@
-
 use crate::core::{
     commands::command::Command,
     entities::{
@@ -44,15 +43,14 @@ impl Command for UserRoleCommand {
         let role_crud = storage.get_role_crud();
         let auth_crud = storage.get_auth_crud();
 
-        // [1]
         let user_exists = auth_crud.user_already_exists_by_username(&user_name)?;
         if !user_exists {
             return Err(String::from(format!("[CORE.ERROR] No such user with name `{}`", user_name)));
         }
 
-        let user_id = auth_crud.get_user_id_by_name(&user_name)?; // [2]
-        let user_roles = role_crud.get_users_roles(user_id)?; // [3]
-        let all_roles = role_crud.get_all_roles()?; // [4]
+        let user_id = auth_crud.get_user_id_by_name(&user_name)?;
+        let user_roles = role_crud.get_users_roles(user_id)?;
+        let all_roles = role_crud.get_all_roles()?;
 
         println!();
         println!("Current roles:");
@@ -72,8 +70,8 @@ impl Command for UserRoleCommand {
                 .split(",")
                 .into_iter()
                 .map(|role| {
-                    role.trim().parse::<u16>().expect("Can't cast user's role to u16")
-                }).collect();
+                    role.trim().parse::<u16>().map_err(|err| format!("[CORE.ERROR] Can't cast user's role {} to u16", role))
+                }).collect::<Result<Vec<u16>,_>>()?;
         }
 
         let roles_to_remove_raw = Prompt::new(&String::from("What roles would you like to REMOVE (type numbers separated by commas), press ENTER to skip: ")).expect("Can't read user's input");
@@ -83,8 +81,8 @@ impl Command for UserRoleCommand {
                 .split(",")
                 .into_iter()
                 .map(|role| {
-                    role.trim().parse::<u16>().expect("Can't cast user's role to u16")
-                }).collect();
+                    role.trim().parse::<u16>().map_err(|err| format!("[CORE.ERROR] Can't cast user's role {} to u16", role))
+                }).collect::<Result<Vec<u16>,_>>()?;
         }
 
         roles_to_add.iter().for_each(|&role| {
@@ -95,7 +93,7 @@ impl Command for UserRoleCommand {
             role_crud.remove_role(user_id, role);
         });
 
-        Ok(ReturnData::new(String::new(), 1, String::new()))
+        Ok(ReturnData::new(String::from("Done!"), 1, String::new()))
     }
 
 }

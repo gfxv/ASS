@@ -29,7 +29,7 @@ fn register_root_user() -> Result<InitUser, String> {
     let raw_password = HiddenPrompt::new(&String::from("Password: ")).expect("Error occurred while reading input");
     let submit_password = HiddenPrompt::new(&String::from("Repeat password: ")).expect("Error occurred while reading input");
 
-    if raw_password.ne(&submit_password) { return Err(String::from("Passwords are not equal!")); }
+    if raw_password.ne(&submit_password) { return Err(String::from("Passwords don't match!")); }
 
     let hashed_password = bcrypt::hash(raw_password, bcrypt::DEFAULT_COST).unwrap();
 

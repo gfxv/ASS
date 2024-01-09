@@ -166,7 +166,6 @@ impl RoleCRUD {
         })?;
 
         Ok(result)
-
     }
 
 }

@@ -63,15 +63,15 @@ impl Storage {
 
         self.conn.execute( "create table if not exists Groups (
             id integer primary key autoincrement,
-            name varchar(50) unique not null,
+            name varchar(255) unique not null,
             access_level int not null
         );", ()).expect("Error in creating Groups table");
 
         self.conn.execute( "create table if not exists PasswordGroup (
             password_id int,
             group_id int,
-            foreign key (password_id) references Passwords(id),
-            foreign key (group_id) references Groups(id)
+            foreign key(password_id) references Passwords(id),
+            foreign key(group_id) references Groups(id)
         );", ()).expect("Error in creating PasswordGroup table");
 
 

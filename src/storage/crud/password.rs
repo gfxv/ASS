@@ -1,5 +1,5 @@
 use std::ffi::CString;
-use rusqlite::{Connection, Result, params, OpenFlags};
+use rusqlite::{Connection, Result, params, OpenFlags, named_params};
 use crate::core::entities::return_data::ReturnData;
 
 
@@ -33,7 +33,7 @@ impl PasswordCRUD {
         while let Some(row) = rows.next().map_err(|err| format!("[STORAGE.ERROR] Can't iterate through rows\n{}", err.to_string()))? {
             value = row.get(0).map_err(|err| format!("[STORAGE.ERROR] Can't get password from row\n{}", err.to_string()))?;
         }
-        println!("value: `{}`", value);
+
         Ok(ReturnData::new(String::from(""), 1, value))
 
     }
@@ -74,6 +74,41 @@ impl PasswordCRUD {
         ).map_err(|err| format!("[STORAGE.ERROR] Can't delete password\n{}", err.to_string()))?;
 
         Ok(ReturnData::new(String::from("Password was deleted successfully!"), 1, String::from("")))
+    }
+
+    pub fn password_exists(&self, resource_name: &String) -> Result<bool, String> {
+        let mut receiver = self.conn
+            .prepare("select id from Passwords where name = :resource_name;")
+            .map_err(|err| format!("[STORAGE.ERROR] Can't prepare password id selection\n{}", err.to_string()))?;
+
+        let mut rows = receiver
+            .query_map(
+                named_params!{ ":resource_name": resource_name},
+                |row| row.get::<usize, usize>(0)
+            ).map_err(|err| "[STORAGE.ERROR] Can't query password id\n".to_string())?;
+
+        Ok(rows.count() != 0)
+    }
+
+    pub fn get_password_id_by_name(&self, resource_name: &String) -> Result<u16, String> {
+        let mut receiver = self.conn
+            .prepare("select id from Passwords where name = :resource_name;")
+            .map_err(|err| {
+                format!("[STORAGE.ERROR] Can't prepare statement to get password with name {} from database\n{}", resource_name, err.to_string())
+            })?;
+
+        let mut rows = receiver
+            .query(named_params! {":resource_name": resource_name})
+            .map_err(|err| {
+                format!("[STORAGE.ERROR] Can't query password name {} from database\n{}", resource_name, err.to_string())
+            })?;
+
+        let mut value: i32 = 0i32;
+        while let Some(row) = rows.next().map_err(|err| format!("[STORAGE.ERROR] Can't iterate through rows\n{}", err.to_string()))? {
+            value = row.get(0).map_err(|err| format!("[STORAGE.ERROR] Can't get password id from row\n{}", err.to_string()))?;
+        }
+
+        Ok(value as u16)
     }
 
 }
