@@ -6,7 +6,6 @@ mod update_password;
 mod create_group;
 mod delete_password;
 mod get_all_groups;
-mod get_groups_by_al;
 mod create_role;
 mod get_all_roles;
 mod user_role;

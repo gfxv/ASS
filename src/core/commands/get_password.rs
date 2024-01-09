@@ -5,6 +5,7 @@ use crate::{core::{
     entities::return_data::ReturnData
 }, storage::storage::Storage};
 use crate::core::security::crypto::{decrypt_data, encrypt_data};
+use crate::core::utils::bearer;
 
 // usage:
 // get <name>
@@ -39,14 +40,15 @@ impl Command for GetPasswordCommand {
             return Ok(ReturnData::new(String::from(""), 2, String::from("")));
         }
 
-        let password_crud = Storage::new(
-            data.get_path().to_owned()
-        ).get_password_crud();
+        let storage = Storage::new(data.get_path().to_string());
+        let password_crud = storage.get_password_crud();
+        let group_crud = storage.get_group_crud();
 
         let name = encrypt_data(raw_name)?;
 
-        let data = password_crud.get_password_by_name(&name)?;
+        bearer::default(data.get_path(), &data.get_user(), &name)?;
 
+        let data = password_crud.get_password_by_name(&name)?;
         if data.get_data().is_empty() {
             return Ok(ReturnData::new(String::from("Password not found"), data.get_status().to_owned(), data.get_message().to_string()));
         }
