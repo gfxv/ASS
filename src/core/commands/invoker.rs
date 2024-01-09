@@ -75,6 +75,14 @@ impl Invoker {
             Box::new(create_group_command)
         );
 
+        let group_command = password_group::PasswordGroupCommand::new(
+            "group".to_string(), "LATER".to_string()
+        );
+        self.commands.insert(
+            group_command.get_name(),
+            Box::new(group_command)
+        );
+
         let get_all_groups_command = get_all_groups::GetAllGroupsCommand::new(
           "groups".to_string(), "LATER".to_string()
         );

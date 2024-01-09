@@ -10,3 +10,4 @@ mod get_groups_by_al;
 mod create_role;
 mod get_all_roles;
 mod user_role;
+mod password_group;
