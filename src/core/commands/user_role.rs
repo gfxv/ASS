@@ -32,7 +32,7 @@ impl Command for UserRoleCommand {
 
     fn execute(&self, data: CommandPayload) -> Result<ReturnData, String> {
 
-        bearer::admin_only(&data.get_user())?;
+        bearer::admin_access(&data.get_user())?;
 
         let mut user_name = data.get_arg().to_string();
         if user_name.is_empty() {

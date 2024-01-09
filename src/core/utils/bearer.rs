@@ -3,13 +3,25 @@ use crate::core::auth::entities::user::User;
 use crate::core::utils::config_parser::{CONFIG_PATH, Parser};
 use crate::storage::storage::Storage;
 
-pub fn admin_only(user: &User) -> Result<(), String>{
+pub fn admin_access(user: &User) -> Result<(), String>{
     let parser = Parser::new(CONFIG_PATH)?;
     let raw_value = parser.get_value("ADMIN_ACCESS_LEVEL")?;
     let admin_access_level = raw_value.parse::<u16>()
         .map_err(|err| format!("[FILE.ERROR] Can't cast ADMIN_ACCESS_LEVEL = {} to u16", raw_value))?;
 
     if (user.get_access_level() < admin_access_level) {
+        handle_error()?;
+    }
+    Ok(())
+}
+
+pub fn mod_access(user: &User) -> Result<(), String> {
+    let parser = Parser::new(CONFIG_PATH)?;
+    let raw_value = parser.get_value("MOD_ACCESS_LEVEL")?;
+    let mod_access_level = raw_value.parse::<u16>()
+        .map_err(|err| format!("[FILE.ERROR] Can't cast MOD_ACCESS_LEVEL = {} to u16", raw_value))?;
+
+    if (user.get_access_level() < mod_access_level) {
         handle_error()?;
     }
     Ok(())

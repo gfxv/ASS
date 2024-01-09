@@ -9,6 +9,7 @@ use crate::core::{
     security::utils::{analyze_password, generate_password},
     security::crypto::{encrypt_data, decrypt_data}
 };
+use crate::core::utils::bearer;
 use crate::storage::storage::Storage;
 
 // usage:
@@ -49,6 +50,9 @@ impl Command for NewPasswordCommand {
     }
 
     fn execute(&self, data: CommandPayload) -> Result<ReturnData, String> {
+
+        bearer::mod_access(&data.get_user())?;
+
         let mut name = data.get_arg().to_string();
 
         if name.is_empty() {

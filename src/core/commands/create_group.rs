@@ -30,7 +30,7 @@ impl Command for CreateGroupCommand {
 
     fn execute(&self, data: CommandPayload) -> Result<ReturnData, String> {
 
-        bearer::admin_only(&data.get_user())?;
+        bearer::admin_access(&data.get_user())?;
 
         let mut name = data.get_arg().to_string();
 

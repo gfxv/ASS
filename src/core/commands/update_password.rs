@@ -9,6 +9,7 @@ use crate::{
 };
 use crate::core::entities::prompt::Prompt;
 use crate::core::security::crypto::encrypt_data;
+use crate::core::utils::bearer;
 
 
 pub struct UpdatePasswordCommand {
@@ -33,6 +34,9 @@ impl Command for UpdatePasswordCommand {
     }
 
     fn execute(&self, data: CommandPayload) -> Result<ReturnData, String> {
+
+        bearer::mod_access(&data.get_user())?;
+
         let raw_name = data.get_arg();
         let raw_new_password = Prompt::new(&String::from("New Password: "))
             .map_err(|err| format!("[CORE.ERROR] Can't read user's `Password` input\n{}", err.to_string()))?;

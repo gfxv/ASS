@@ -7,6 +7,7 @@ use crate::core::{
         return_data:: ReturnData
     }
 };
+use crate::core::utils::bearer;
 use crate::storage::storage::Storage;
 
 
@@ -32,6 +33,8 @@ impl Command for DeletePasswordCommand {
     }
 
     fn execute(&self, data: CommandPayload) -> Result<ReturnData, String> {
+
+        bearer::admin_access(&data.get_user());
 
         let name = data.get_arg();
 
