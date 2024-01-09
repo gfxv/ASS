@@ -31,7 +31,7 @@ impl Invoker {
         //----------------------//
 
         let get_password_command = get_password::GetPasswordCommand::new(
-            "get".to_string(), "LATER".to_string()
+            "get".to_string(), "get resource's password".to_string()
         );
         self.commands.insert(
             get_password_command.get_name(), 
@@ -39,7 +39,7 @@ impl Invoker {
         );
 
         let new_password_command = new_password::NewPasswordCommand::new(
-            "new".to_string(), "LATER".to_string()
+            "new".to_string(), "create new resource".to_string()
         );
         self.commands.insert(
             new_password_command.get_name(), 
@@ -47,7 +47,7 @@ impl Invoker {
         );
 
         let update_password_command = update_password::UpdatePasswordCommand::new(
-            "update".to_string(), "LATER".to_string()
+            "update".to_string(), "update resource's password".to_string()
         );
         self.commands.insert(
             update_password_command.get_name(),
@@ -55,7 +55,7 @@ impl Invoker {
         );
 
         let delete_password_command = delete_password::DeletePasswordCommand::new(
-          "delete".to_string(), "LATER".to_string()
+          "delete".to_string(), "delete resource".to_string()
         );
         self.commands.insert(
             delete_password_command.get_name(),
@@ -68,7 +68,7 @@ impl Invoker {
 
         // ng = new group
         let create_group_command = create_group::CreateGroupCommand::new(
-            "ng".to_string(), "LATER".to_string()
+            "ng".to_string(), "create new group".to_string()
         );
         self.commands.insert(
             create_group_command.get_name(),
@@ -76,7 +76,7 @@ impl Invoker {
         );
 
         let group_command = password_group::PasswordGroupCommand::new(
-            "group".to_string(), "LATER".to_string()
+            "group".to_string(), "add/remove password to/from group(s)".to_string()
         );
         self.commands.insert(
             group_command.get_name(),
@@ -84,7 +84,7 @@ impl Invoker {
         );
 
         let get_all_groups_command = get_all_groups::GetAllGroupsCommand::new(
-          "groups".to_string(), "LATER".to_string()
+          "groups".to_string(), "list all available groups".to_string()
         );
         self.commands.insert(
             get_all_groups_command.get_name(),
@@ -96,7 +96,7 @@ impl Invoker {
         //------------------//
 
         let create_role_command = create_role::CreateRoleCommand::new(
-            "nr".to_string(), "LATER".to_string()
+            "nr".to_string(), "create new role".to_string()
         );
         self.commands.insert(
             create_role_command.get_name(),
@@ -104,7 +104,7 @@ impl Invoker {
         );
 
         let role_command = user_role::UserRoleCommand::new(
-            "role".to_string(), "LATER".to_string()
+            "role".to_string(), "add/remove user to/from role(s)".to_string()
         );
         self.commands.insert(
             role_command.get_name(),
@@ -112,7 +112,7 @@ impl Invoker {
         );
 
         let get_all_roles_command = get_all_roles::GetAllGroupsCommand::new(
-            "roles".to_string(), "LATER".to_string()
+            "roles".to_string(), "list all available roles".to_string()
         );
         self.commands.insert(
             get_all_roles_command.get_name(),
