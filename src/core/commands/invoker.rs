@@ -119,6 +119,14 @@ impl Invoker {
             Box::new(get_all_roles_command)
         );
 
+        let clear = clear_terminal::ClearTerminalCommand::new(
+            "clear".to_string(), "clears terminal".to_string()
+        );
+        self.commands.insert(
+            clear.get_name(),
+            Box::new(clear)
+        );
+
     }
 
 
