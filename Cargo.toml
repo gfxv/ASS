@@ -1,5 +1,5 @@
 [package]
-name = "advanced-storage-system"
+name = "ass"
 version = "0.1.0"
 edition = "2021"
 
