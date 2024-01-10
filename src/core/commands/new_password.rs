@@ -60,7 +60,7 @@ impl Command for NewPasswordCommand {
                 .map_err(|err| format!("[CORE.ERROR] Can't read user's `Resource name` input\n{}", err.to_string()))?;
         }
 
-        let mut password = Prompt::new(&String::from("Password: "))
+        let mut password = Prompt::new(&String::from("Value: "))
             .expect("[CORE.ERROR] Can't read user's `Password` input");
 
         match analyze_password(&password) {
