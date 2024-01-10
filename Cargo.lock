@@ -3,18 +3,6 @@
 version = 3
 
 [[package]]
-name = "advanced-storage-system"
-version = "0.1.0"
-dependencies = [
- "bcrypt",
- "magic-crypt",
- "rand",
- "rpassword",
- "rusqlite",
- "zxcvbn",
-]
-
-[[package]]
 name = "aes"
 version = "0.7.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -52,6 +40,18 @@ name = "allocator-api2"
 version = "0.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0942ffc6dcaadf03badf6e6a2d0228460359d5e34b57ccdc720b7382dfbd5ec5"
+
+[[package]]
+name = "ass"
+version = "0.1.0"
+dependencies = [
+ "bcrypt",
+ "magic-crypt",
+ "rand",
+ "rpassword",
+ "rusqlite",
+ "zxcvbn",
+]
 
 [[package]]
 name = "base64"
