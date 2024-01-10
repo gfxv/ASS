@@ -50,7 +50,7 @@ impl Command for GetPasswordCommand {
 
         let data = password_crud.get_password_by_name(&name)?;
         if data.get_data().is_empty() {
-            return Ok(ReturnData::new(String::from("Password not found"), data.get_status().to_owned(), data.get_message().to_string()));
+            return Ok(ReturnData::new(String::from("Password not found (or wrong encryption key)"), data.get_status().to_owned(), data.get_message().to_string()));
         }
 
         let decrypted = decrypt_data(data.get_data())?;
